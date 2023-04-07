@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="/css/chatStyle.css">
+        <link rel="manifest" href="./manifest.json" crossorigin="use-credentials"/>
+        <title> CHAT </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+
+    </head>
+    <body>
+        <p class="titleChat"> CHAT </p>
+        
+        <form id="chat" action="/chatMessage" method="POST">
+            <p id="message"> </p>    
+            <div class="userMess" id="messageBox">
+                <p id="mess"> Write your message...</p>
+                <input type="text" id="chatText" name="chatText"><br>   
+                <button id="sendMessage" type="submit"> Send Message </button>
+            </div>
+        </form>
+
+        <form class="logout" action="/logout" method="POST">
+            <div class="logoutBox">
+                <button type="submit" id="logoutBTN"> LOG OUT</button>
+            </div>
+
+        </form>
+
+        <script src="./notificationON.js"></script>
+        <script>
+            /*getUsers().then((usersArr) =>{
+                let messageText = "";
+                usersArr.forEach(element => {
+                    console.log("elemento ",element);
+                    messageText += element + " "; // concatenate each element to messageText
+                });
+                var elem = document.getElementById('message');
+                if(elem){
+                    elem.textContent = messageText; // set the text content of the element to messageText
+                }
+            }).catch((error) => {
+                console.log(error);
+            })*/
+        </script>
+
+        
+    </body>
+</html>

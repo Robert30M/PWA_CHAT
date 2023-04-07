@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="/css/chatStyle.css">
+    <link rel="manifest" href="./manifest.json" crossorigin="use-credentials"/>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="./notificationON.js"></script>
+
+
+    <script>
+        function showNotiEnable(){
+            sendNoti = document.getElementById("sendNoti");
+            if(Notification.permission=="granted"){
+                sendNoti.classList.add("invisible");
+                document.getElementById("username").disabled = false;
+                document.getElementById("sendUser").disabled = false;
+            }   
+        }
+    </script>
+
+
+
+    <script>
+    function getSO(){
+        var apple = document.getElementById("appleBTN");
+        var install = document.getElementById("installBtn")
+
+        if (navigator.userAgent.indexOf("Win") != -1) {
+            apple.classList.add("hidden");
+            install.classList.remove('hidden');
+        }
+        if (navigator.userAgent.indexOf("Mac") != -1) {
+            apple.classList.add("hidden");
+            install.classList.remove('hidden');
+        } 
+
+        if (navigator.userAgent.indexOf("Linux") != -1) {
+            apple.classList.add("hidden");
+            install.classList.remove('hidden');
+        }
+
+        if (navigator.userAgent.indexOf("Android") != -1) {
+            apple.classList.add("hidden");
+            install.classList.remove('hidden');
+        }
+    }
+
+    </script>
+   <script>
+    function checkPWA() {
+        var install = document.getElementById("installBtn");
+        window.addEventListener('beforeinstallprompt', (event) =>{
+            event.preventDefault();  
+        })
+
+        window.addEventListener('appinstalled', (event) =>{
+            console.log("sono in appinstalled");
+            document.cookie = ("pwa-installed=true");
+
+        })
+
+        if(document.cookie.indexOf("pwa-installed=true") !== -1 || (window.navigator.standalone === true)){
+            install.classList.add("hidden");
+            console.log("pwa installed");
+            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
+        }else{
+            console.log("not installed");
+        }
+
+        /*if(window.matchMedia('(display-mode: standalone)').matches || (window.navigator.standalone === true) || (showPrompt === undefined)){
+            install.classList.add("hidden");
+            console.log("pwa installed");
+            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
+        }else{
+            console.log("not installed");
+        }
+
+       /* var isPWAinstalled = (window.matchMedia('display-mode: standalone').matches || window.navigator.standalone === true);
+        console.log("sono detro check");
+        window.addEventListener('beforeinstallprompt', function(event){
+            console.log("dentro windoe");
+            isPWAinstalled = true;
+            console.log("valore ",isPWAinstalled);
+        });
+        console.log("valore ",isPWAinstalled);
+
+        if(isPWAinstalled){
+            install.classList.add("hidden");
+            console.log("pwa installed");
+            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
+        }else{
+            console.log("not installed");
+        }*/
+
+    }   
+    </script>
+ 
+    <style>
+            .hidden{
+                display: none;
+            }
+
+            .invisible{
+                visibility: hidden;
+            }
+    </style>
+    <title> Broadcast Chat </title>
+
+</head>
+
+<body onload="showNotiEnable(); getSO(); checkPWA()">
+
+    <button id="sendNoti" class="permNoti" onclick="requestPermission()"> ENABLE NOTIFICATION </button>
+    <div class="cssUser hidden" id="userBox">
+        <p> Insert your username </p>
+        <input type="text" id="username" name="username" disabled><br>           
+        <button id="sendUser" onclick="showChatPage()" disabled> Send Username </button>
+    </div>
+
+    <form id="formChat" action="/" method="POST"> 
+        <div id="goChat" class="hidden">
+            <span id="userPassed" name="userP"></span>
+            <button type="submit" name="BTNchat" id="chatBTN"> GO TO CHAT </button>
+        </div>
+    </form>
+
+
+    <a href="appleGuide.html">
+        <button type="submit" name="BTNapple" id="appleBTN"> APPLE GUIDE </button>
+    </a>
+
+    <p class="installText" id="installText"> INSTALL THE PWA TO ACCESS ALL THE FEATURES</p>
+    <button id="installBtn" onclick="install()" disabled class="hidden"> Install PWA </button>
+    
+
+    <script>
+            const sendUser = document.getElementById('sendUser');
+            sendUser.addEventListener('click', () => {
+                const username = document.getElementsByName('username')[0].value;
+                const button = document.getElementById("chatBTN");
+                button.value=username;
+                addUserDB(username);
+            })
+    </script>
+
+    <script>
+        function showUsernameBox(){
+            var permission = document.getElementById("sendNoti");
+            var user = document.getElementById("userBox");
+            if (user.classList.contains("hidden")) {
+                 user.classList.remove("hidden");
+                 //permission.classList.add("invisible");
+            } else {
+                 user.classList.add("hidden");
+            }
+        }
+    </script>
+
+    <script>
+        function showChatPage(){
+            var user = document.getElementById("userBox");
+            var chat = document.getElementById("goChat");
+
+            if(chat.classList.contains("hidden")){
+                console.log("Contiene");
+                chat.classList.remove("hidden");
+                user.classList.add("invisible");
+            }else{
+                chat.classList.add("hidden");
+            }
+        }
+
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("./sw.js", {
+                scope: '/'
+            });
+        }
+    </script>
+
+    <script src="./installBTN.js"> </script>
+    
+
+
+    <script>
+        var element = document.getElementById("sendNoti");
+        var installBtn = document.getElementById("installBtn");
+
+        if(window.matchMedia('(display-mode : standalone)').matches){
+            if(element){
+                installBtn.style.display = "none";
+                showUsernameBox();
+
+            }else{
+                console.error("not found");
+            }
+        }else{
+            if(element){
+                //qua cosa vedo sul browser
+                element.style.display = "none";
+            }else{
+                console.error("not found in none");
+            }
+        }
+
+    </script>
+
+ 
+
+</body>
+</html>

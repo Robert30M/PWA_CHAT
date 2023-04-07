@@ -1,0 +1,16 @@
+{
+    "lang": "en-us",
+    "name": "Broadcast chat PWA",
+    "short_name": "Broadcast chat",
+    "description": "A basic broadcast chat application that allow different cliants to comunicate",
+    "start_url": ".",
+    "background_color": "#2f3d58",
+    "theme_color": "#2f3d58",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [{
+        "src": "../images/icon.png",
+        "sizes": "512x512"
+    }]
+
+}
