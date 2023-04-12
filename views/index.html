@@ -54,10 +54,16 @@
     </script>
    <script>
     function checkPWA() {
+
+        //qua ho bisogno di sapere che è installata per spedire sia al browser che all'app che è installata.
+        // solo dopo essere stata installata io spedisco quel messaggio non posso usare lo script sotto perchè semplicemente separa
+        //quello che è cosa visualizzare non c'è un evento che fa scattare qualcosa.
         var install = document.getElementById("installBtn");
         window.addEventListener('beforeinstallprompt', (event) =>{
             event.preventDefault();  
         })
+
+        console.log("sono in check")
 
         window.addEventListener('appinstalled', (event) =>{
             console.log("sono in appinstalled");
@@ -65,10 +71,16 @@
 
         })
 
-        if(document.cookie.indexOf("pwa-installed=true") !== -1 || (window.navigator.standalone === true)){
+        if(window.navigator.userAgent.indexOf('iPhone') != -1){
+            if(window.navigator.standalone == true){
+            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
+            }
+        } 
+
+        if(document.cookie.indexOf("pwa-installed=true") !== -1 || (window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone){
             install.classList.add("hidden");
             console.log("pwa installed");
-            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
+           
         }else{
             console.log("not installed");
         }
@@ -114,7 +126,7 @@
 
 </head>
 
-<body onload="showNotiEnable(); getSO(); checkPWA()">
+<body onload="checkPWA(); showNotiEnable(); getSO()">
 
     <button id="sendNoti" class="permNoti" onclick="requestPermission()"> ENABLE NOTIFICATION </button>
     <div class="cssUser hidden" id="userBox">
@@ -194,7 +206,11 @@
         var element = document.getElementById("sendNoti");
         var installBtn = document.getElementById("installBtn");
 
+//se io inserisco qua pwa installata sul browser e in app vedo sempre che è installata anche prima che venga installata 
+//qua verifico solo se sono all'interno della pwa o nel browser e a seconda cosa stampare
+
         if(window.matchMedia('(display-mode : standalone)').matches){
+            //qui cosa vedo nell'applicazione
             if(element){
                 installBtn.style.display = "none";
                 showUsernameBox();
@@ -206,6 +222,7 @@
             if(element){
                 //qua cosa vedo sul browser
                 element.style.display = "none";
+
             }else{
                 console.error("not found in none");
             }

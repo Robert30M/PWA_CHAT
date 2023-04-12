@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
     const indexPath = path.join(process.cwd(), 'views/index.html');
     res.sendFile(indexPath);
+    location.reload(true);
 });
 
 app.get('/chatMessage', (req, res) =>{
