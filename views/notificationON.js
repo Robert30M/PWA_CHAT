@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
     apiKey: "AIzaSyAkPsE3jPQywZIzB4DIoqWaas6W-l6bJkk",
     authDomain: "pushnoti-9bd26.firebaseapp.com",
@@ -45,6 +44,7 @@ const addUserDB = async (value) =>{
  
 
 const requestPermission = () =>{
+    console.log("dentro il request");
     messaging.requestPermission().then(async () => {
         token = await getFCMToken();
         location.reload(true);
@@ -53,7 +53,6 @@ const requestPermission = () =>{
         
     });
 }
-
 
 const USERS = firebase.database().ref('Tokens/');
 

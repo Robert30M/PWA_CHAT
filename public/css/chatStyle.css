@@ -103,7 +103,7 @@ body {
   padding: 10px 15px;
   text-align: center;
   transition: 200ms;
-  width: 17%;
+  width: 40%;
   margin-top: 20px;
   box-sizing: border-box;
   border: 0;
@@ -348,3 +348,10 @@ input{
   touch-action: manipulation;
   width: 55%;
 }
+
+/*.camera-settings{
+  width: 50%;
+  height: 50%;
+  border-style: dotted;
+  border-color: rebeccapurple;
+}*/

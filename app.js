@@ -45,34 +45,7 @@ app.use(session({
 }));
 
 let user = '';
-app.post('/', (req, res) => {
-  /*
-  const message = req.body.chatText;
-  console.log("Messaggio chat", message);
-  const payload = {
-    notification: {
-        'title': "TITOLO PROVA",
-        'body': message, 
-    }
-  };
-
-  const options = {
-    priority: "high"
-  }
-
-  tokenDB.once('value', (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      const childKey = childSnapshot.key;
-      const childData = childSnapshot.val();
-      console.log("chiave: ",childKey);
-      console.log("valore: ",childData);
-      admin.messaging().sendToDevice(childData, payload, options)
-      .catch(error => {
-        console.log(error);
-      })
-    })
-  })*/
-  
+app.post('/', (req, res) => {  
   user = req.body.BTNchat;
   console.log("Username", user);
   res.redirect('/chatMessage');
@@ -97,7 +70,7 @@ app.post('/chatMessage', (req, res) => {
       const childKey = childSnapshot.key;
       const childData = childSnapshot.val();
       console.log("chiave: ",childKey);
-      console.log("valore: ",childData);
+      console.log("valore: ",childData); //chiave
       admin.messaging().sendToDevice(childData, payload, options)
       .catch(error => {
         console.log(error);
@@ -123,10 +96,4 @@ app.post('/logout', (req, res) =>{
   res.redirect('/');
 });
 
-
-
-/*setInterval(() => {
-  console.log("refreshing...")
-}, 5000);
-*/
 app.listen(port, () => console.log("Server ready", {port}));

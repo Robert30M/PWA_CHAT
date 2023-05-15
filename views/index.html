@@ -11,6 +11,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="./notificationON.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
 
 
     <script>
@@ -20,7 +22,7 @@
                 sendNoti.classList.add("invisible");
                 document.getElementById("username").disabled = false;
                 document.getElementById("sendUser").disabled = false;
-            }   
+            }
         }
     </script>
 
@@ -29,25 +31,30 @@
     <script>
     function getSO(){
         var apple = document.getElementById("appleBTN");
-        var install = document.getElementById("installBtn")
+        var install = document.getElementById("installBtn");
+        var ios = document.getElementById("LS");
 
         if (navigator.userAgent.indexOf("Win") != -1) {
             apple.classList.add("hidden");
             install.classList.remove('hidden');
+            ios.classList.add('hidden');
         }
         if (navigator.userAgent.indexOf("Mac") != -1) {
             apple.classList.add("hidden");
             install.classList.remove('hidden');
-        } 
+            ios.classList.add('hidden');
+        }
 
         if (navigator.userAgent.indexOf("Linux") != -1) {
             apple.classList.add("hidden");
             install.classList.remove('hidden');
+            ios.classList.add('hidden');
         }
 
         if (navigator.userAgent.indexOf("Android") != -1) {
             apple.classList.add("hidden");
             install.classList.remove('hidden');
+            ios.classList.add('hidden');
         }
     }
 
@@ -60,7 +67,7 @@
         //quello che è cosa visualizzare non c'è un evento che fa scattare qualcosa.
         var install = document.getElementById("installBtn");
         window.addEventListener('beforeinstallprompt', (event) =>{
-            event.preventDefault();  
+            event.preventDefault();
         })
 
         console.log("sono in check")
@@ -71,48 +78,20 @@
 
         })
 
-        if(window.navigator.userAgent.indexOf('iPhone') != -1){
-            if(window.navigator.standalone == true){
-            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
-            }
-        } 
-
-        if(document.cookie.indexOf("pwa-installed=true") !== -1 || (window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone){
+        //document.cookie.indexOf("pwa-installed=true") !== -1
+        console.log(localStorage.getItem("pwa-installed"));
+        if(localStorage.getItem("pwa-installed") === "true" || (window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone){
             install.classList.add("hidden");
             console.log("pwa installed");
-           
+            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
+
         }else{
             console.log("not installed");
         }
 
-        /*if(window.matchMedia('(display-mode: standalone)').matches || (window.navigator.standalone === true) || (showPrompt === undefined)){
-            install.classList.add("hidden");
-            console.log("pwa installed");
-            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
-        }else{
-            console.log("not installed");
-        }
-
-       /* var isPWAinstalled = (window.matchMedia('display-mode: standalone').matches || window.navigator.standalone === true);
-        console.log("sono detro check");
-        window.addEventListener('beforeinstallprompt', function(event){
-            console.log("dentro windoe");
-            isPWAinstalled = true;
-            console.log("valore ",isPWAinstalled);
-        });
-        console.log("valore ",isPWAinstalled);
-
-        if(isPWAinstalled){
-            install.classList.add("hidden");
-            console.log("pwa installed");
-            document.getElementById("installText").innerHTML = "PWA INSTALLED!";
-        }else{
-            console.log("not installed");
-        }*/
-
-    }   
+    }
     </script>
- 
+
     <style>
             .hidden{
                 display: none;
@@ -131,16 +110,18 @@
     <button id="sendNoti" class="permNoti" onclick="requestPermission()"> ENABLE NOTIFICATION </button>
     <div class="cssUser hidden" id="userBox">
         <p> Insert your username </p>
-        <input type="text" id="username" name="username" disabled><br>           
+        <input type="text" id="username" name="username" disabled><br>
         <button id="sendUser" onclick="showChatPage()" disabled> Send Username </button>
     </div>
 
-    <form id="formChat" action="/" method="POST"> 
+    <form id="formChat" action="/" method="POST">
         <div id="goChat" class="hidden">
             <span id="userPassed" name="userP"></span>
             <button type="submit" name="BTNchat" id="chatBTN"> GO TO CHAT </button>
         </div>
     </form>
+
+
 
 
     <a href="appleGuide.html">
@@ -149,7 +130,9 @@
 
     <p class="installText" id="installText"> INSTALL THE PWA TO ACCESS ALL THE FEATURES</p>
     <button id="installBtn" onclick="install()" disabled class="hidden"> Install PWA </button>
-    
+    <button name="LS" id="LS"  onclick="attivaLS()"> CONFIRM INSTALL IOS </button>
+
+
 
     <script>
             const sendUser = document.getElementById('sendUser');
@@ -167,7 +150,6 @@
             var user = document.getElementById("userBox");
             if (user.classList.contains("hidden")) {
                  user.classList.remove("hidden");
-                 //permission.classList.add("invisible");
             } else {
                  user.classList.add("hidden");
             }
@@ -199,20 +181,18 @@
     </script>
 
     <script src="./installBTN.js"> </script>
-    
+
 
 
     <script>
         var element = document.getElementById("sendNoti");
         var installBtn = document.getElementById("installBtn");
 
-//se io inserisco qua pwa installata sul browser e in app vedo sempre che è installata anche prima che venga installata 
-//qua verifico solo se sono all'interno della pwa o nel browser e a seconda cosa stampare
-
         if(window.matchMedia('(display-mode : standalone)').matches){
             //qui cosa vedo nell'applicazione
             if(element){
                 installBtn.style.display = "none";
+                localStorage.setItem("pwa-installed", "true");
                 showUsernameBox();
 
             }else{
@@ -230,7 +210,13 @@
 
     </script>
 
- 
+    <script>
+        function attivaLS(){
+            localStorage.setItem("pwa-installed", "true");
+            location.reload(true);
+        }
+    </script>
+
 
 </body>
 </html>
