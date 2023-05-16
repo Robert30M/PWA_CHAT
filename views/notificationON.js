@@ -1,12 +1,5 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyAkPsE3jPQywZIzB4DIoqWaas6W-l6bJkk",
-    authDomain: "pushnoti-9bd26.firebaseapp.com",
-    databaseURL: "https://pushnoti-9bd26-default-rtdb.firebaseio.com",
-    projectId: "pushnoti-9bd26",
-    storageBucket: "pushnoti-9bd26.appspot.com",
-    messagingSenderId: "9373725090",
-    appId: "1:9373725090:web:f98fc9381d406c2b9bc2fb",
-    measurementId: "G-YEWD5QDSSY"
+    //stesse configurazioni di prima
   };
 
 
@@ -18,9 +11,13 @@ var token ='';
 
 
 const getFCMToken = async () => {
-    await messaging.getToken(messaging, {vapid: "BLmfEuPd7yJk2IPFzLCF1aRAbHRcjf-tyfmN6aZ-u5vAYAWSJgWuXsZyrX55aoPfAuuosZ8rbO3j0AR22L5pY6I"}).then((a) => {token = a})
+    await messaging.getToken(messaging, {vapid:""}).then((a) => {token = a})
     return token;
 }
+/*
+    vapid key: è la key pair che si trova in fondo del nella voce cloud messaging in project settings
+*/
+
 
 const showFCMToken = async () =>{
     await getFCMToken();

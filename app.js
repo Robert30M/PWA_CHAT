@@ -11,7 +11,7 @@ const port = 3500;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://pushnoti-9bd26-default-rtdb.firebaseio.com"
+  //databaseURL: //link del db che si trova all'interno della voce realtime db, possibile implementazione anche con mongo //rimuovere 
 });
 
 const tokenDB = admin.database().ref('Tokens/');
